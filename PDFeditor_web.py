@@ -41,7 +41,7 @@ import os
 # from pathlib import Path
 # from pdf2image import convert_from_path
 from pdf2image import convert_from_bytes
-# from PIL import Image
+from PIL import Image
 import numpy as np
 import img2pdf
 # import tempfile
@@ -50,9 +50,9 @@ import img2pdf
 def main():
     st.title("PDF比較")
     st.header('旧ファイル')
-    old_file = st.file_uploader("旧ファイル", type="pdf", key="1234")
+    old_file = st.file_uploader("mae", type="pdf", key="1234")
     st.header('新ファイル')
-    new_file = st.file_uploader("新ファイル", type="pdf", key="0000")
+    new_file = st.file_uploader("sin", type="pdf", key="0000")
     
     if old_file is not None:
         if new_file is not None:
@@ -124,9 +124,9 @@ def diffPDF(oldfilename,newfilename):
     #     oldpng.append(np.array(Image.open(file_path)))
     # with tempfile.TemporaryDirectory() as td:
     print("新ファイル変換中")
-    pdf_bytes = newfilename.read()
+    newpdf_bytes = newfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
-    page = convert_from_bytes(pdf_bytes, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
+    page = convert_from_bytes(newpdf_bytes, output_folder=temp_path,fmt='png',dpi=500,output_file="new")
     
     # page = convert_from_path(newfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="new")
     leng = int(len(page))
@@ -138,7 +138,7 @@ def diffPDF(oldfilename,newfilename):
     # for file_path in file_list:
     #     newpng.append(np.array(Image.open(file_path)))
     
-    # im_marge=[]
+    im_marge=[]
     leng = int(len(oldpng))
     # with tempfile.TemporaryDirectory() as td:
     print("比較合成中")
@@ -157,13 +157,13 @@ def diffPDF(oldfilename,newfilename):
         im_b[:,:,2]=255
         im_b[:,:,1]=255
         # NumPy配列をPIL Imageに変換
-        # temp_array = np.minimum(im_r,im_b) # 合成
-        # output_array=temp_array.astype(np.uint8)
-        # pil_image = Image.fromarray(output_array)
+        temp_array = np.minimum(im_r,im_b) # 合成
+        output_array=temp_array.astype(np.uint8)
+        pil_image = Image.fromarray(output_array)
         
         # 画像をPNG形式で保存
         output_filename = str(temp_path)+"\\"+str(i)+"out.png"
-        # pil_image.save(output_filename)
+        pil_image.save(output_filename)
         lists.append(output_filename)
         # im_marge.append(im_r + im_b)
         
@@ -172,7 +172,7 @@ def diffPDF(oldfilename,newfilename):
     
     # PDFファイル出力
     # pdfpath = temp_path+"\output_diff.pdf"
-    # # lists = list(glob.glob(os.path.join(temp_path, "*out.png")))
+    # lists = list(glob.glob(os.path.join(temp_path, "*out.png")))
     # with open(pdfpath,"wb") as f:
     #     f.write(img2pdf.convert([str(i) for i in lists if ".png" in i]))
     # root.destroy()
