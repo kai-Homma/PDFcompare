@@ -39,9 +39,9 @@ import streamlit as st
 import os
 # import glob
 # from pathlib import Path
-from pdf2image import convert_from_path
+# from pdf2image import convert_from_path
 from pdf2image import convert_from_bytes
-from PIL import Image
+# from PIL import Image
 import numpy as np
 import img2pdf
 # import tempfile
@@ -138,7 +138,7 @@ def diffPDF(oldfilename,newfilename):
     # for file_path in file_list:
     #     newpng.append(np.array(Image.open(file_path)))
     
-    im_marge=[]
+    # im_marge=[]
     leng = int(len(oldpng))
     # with tempfile.TemporaryDirectory() as td:
     print("比較合成中")
@@ -157,13 +157,13 @@ def diffPDF(oldfilename,newfilename):
         im_b[:,:,2]=255
         im_b[:,:,1]=255
         # NumPy配列をPIL Imageに変換
-        temp_array = np.minimum(im_r,im_b) # 合成
-        output_array=temp_array.astype(np.uint8)
-        pil_image = Image.fromarray(output_array)
+        # temp_array = np.minimum(im_r,im_b) # 合成
+        # output_array=temp_array.astype(np.uint8)
+        # pil_image = Image.fromarray(output_array)
         
         # 画像をPNG形式で保存
         output_filename = str(temp_path)+"\\"+str(i)+"out.png"
-        pil_image.save(output_filename)
+        # pil_image.save(output_filename)
         lists.append(output_filename)
         # im_marge.append(im_r + im_b)
         
