@@ -111,7 +111,7 @@ def diffPDF(oldfilename,newfilename):
     print("旧ファイル変換中")
     pdf_bytes = oldfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
-    page = convert_from_bytes(pdf_bytes, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
+    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=500)
     
     
     leng = int(len(page))
@@ -125,9 +125,9 @@ def diffPDF(oldfilename,newfilename):
     #     oldpng.append(np.array(Image.open(file_path)))
     # with tempfile.TemporaryDirectory() as td:
     print("新ファイル変換中")
-    newpdf_bytes = newfilename.read()
+    pdf_bytes = newfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
-    page = convert_from_bytes(newpdf_bytes, output_folder=temp_path,fmt='png',dpi=500,output_file="new")
+    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=500)
     
     # page = convert_from_path(newfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="new")
     leng = int(len(page))
@@ -163,9 +163,9 @@ def diffPDF(oldfilename,newfilename):
         pil_image = Image.fromarray(output_array)
         
         # 画像をPNG形式で保存
-        output_filename = str(temp_path)+"\\"+str(i)+"out.png"
-        pil_image.save(output_filename)
-        lists.append(output_filename)
+        # output_filename = str(temp_path)+"\\"+str(i)+"out.png"
+        png=pil_image.save(format="png")
+        lists.append(png)
         # im_marge.append(im_r + im_b)
         
     # output_image = Image.fromarray(im_marge)
@@ -177,7 +177,7 @@ def diffPDF(oldfilename,newfilename):
     # with open(pdfpath,"wb") as f:
     #     f.write(img2pdf.convert([str(i) for i in lists if ".png" in i]))
     # root.destroy()
-    images = img2pdf.convert([str(i) for i in lists if ".png" in i])
+    images = img2pdf.convert([i for i in lists if ".png" in i])
     return images
     
 if __name__ == "__main__":
