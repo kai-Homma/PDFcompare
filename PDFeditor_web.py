@@ -44,6 +44,7 @@ from pdf2image import convert_from_bytes
 from PIL import Image
 import numpy as np
 import img2pdf
+from io import BytesIO
 # import tempfile
 # import sys
 
@@ -144,6 +145,7 @@ def diffPDF(oldfilename,newfilename):
     # with tempfile.TemporaryDirectory() as td:
     print("比較合成中")
     lists=[]
+    buffered = BytesIO()
     for i in range(leng):
         im_r = newpng[i]
         pixel_sum = np.sum(im_r, axis=2)
@@ -164,7 +166,8 @@ def diffPDF(oldfilename,newfilename):
         
         # 画像をPNG形式で保存
         # output_filename = str(temp_path)+"\\"+str(i)+"out.png"
-        png=pil_image.save(i,format="png")
+        png=pil_image.save(buffered, format="png")
+        
         lists.append(png)
         # im_marge.append(im_r + im_b)
         
