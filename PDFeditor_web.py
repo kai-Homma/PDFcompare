@@ -168,7 +168,7 @@ def diffPDF(oldfilename,newfilename):
         # output_filename = str(temp_path)+"\\"+str(i)+"out.png"
         buffered = BytesIO()
         pil_image.save(buffered, format="png")
-        
+
         lists.append(buffered)
         # im_marge.append(im_r + im_b)
         
@@ -181,7 +181,8 @@ def diffPDF(oldfilename,newfilename):
     # with open(pdfpath,"wb") as f:
     #     f.write(img2pdf.convert([str(i) for i in lists if ".png" in i]))
     # root.destroy()
-    images = img2pdf.convert([i for i in lists])# if ".png" in i])
+    images = img2pdf.convert([i.getvalue() for i in lists])
+    # images = img2pdf.convert([i for i in lists])# if ".png" in i])
     return images
     
 if __name__ == "__main__":
