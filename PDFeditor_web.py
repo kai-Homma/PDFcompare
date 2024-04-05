@@ -33,6 +33,7 @@ def main():
     if old_file is not None:
         if new_file is not None:
             output(old_file,new_file)
+            
             # oldimage = convert_pdf_to_images(old_file)
             # newimage = convert_pdf_to_images(new_file)
             # PDF ファイルのバイナリデータを取得
@@ -44,7 +45,8 @@ def output(old_file,new_file):
     flag = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
     # PDF ファイルをダウンロード可能なリンクとして表示
     if flag:
-        main()          
+        old_file=None
+        new_file=None
             
 
             # ダウンロードボタンのラベルとファイル名
