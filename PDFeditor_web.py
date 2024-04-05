@@ -2,34 +2,8 @@
 # """
 # Created on Thu Jan  4 13:52:26 2024
 
-# pip install pdf2image
-# pip install poppler -> pip install python-poppler-qt5 -> windowsに直接インストール
-
 # cd C:\Users\HOMMA.KAI.P\Desktop\python\PDFdiff
 # streamlit run PDFeditor_web.py
-
-# Jpegの時の解像度が落ちすぎ
-
-# 環境作成
-# https://nukoshogun.hatenablog.com/entry/python_exe
-
-
-# activate PDF
-# 仮想環境切り替え
-
-# 対象フォルダへ移動し
-# pyinstaller PDFeditor.py --onefile 最初だけ
-# https://zenn.dev/syoyo/articles/19f9320f3c2864
-# 上記を参考にそのあとspecファイルを編集してpopplerを入れる
-# pyinstaller PDFeditor.spec　そしてspecファイルベースにexeファイル作成
-# 結局popplerをDLしてパス通してもらわないと使えなかったので、↑3行はいらないかも
-
-
-# 環境作成時は必要最小限のライブラリと下記コマンドでインストーラをインストール
-# pip install pyinstaller
-# pip install pdf2image
-# pip install img2pdf
-# pip install numpy
 
 # @author: HOMMA.KAI
 # """
@@ -48,24 +22,31 @@ from io import BytesIO
 # import tempfile
 # import sys
 
+
 def main():
     st.title("PDF比較")
     st.header('旧ファイル')
-    old_file = st.file_uploader("mae", type="pdf", key="1234")
+    old_file = st.file_uploader("変更前のファイルを入れて下さい", type="pdf", key="1234")
     st.header('新ファイル')
-    new_file = st.file_uploader("sin", type="pdf", key="0000")
-    
+    new_file = st.file_uploader("変更後のファイルを入れて下さい", type="pdf", key="0000")
+        
     if old_file is not None:
         if new_file is not None:
+            output(old_file,new_file)
             # oldimage = convert_pdf_to_images(old_file)
             # newimage = convert_pdf_to_images(new_file)
-            
             # PDF ファイルのバイナリデータを取得
-            pdf_data = diffPDF(old_file,new_file)
+            
+def output(old_file,new_file):
+    st.title("少々お待ちください。")
+    pdf_data = diffPDF(old_file,new_file)
+    st.header('完了')
+    flag = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
+    # PDF ファイルをダウンロード可能なリンクとして表示
+    if flag:
+        main()          
+            
 
-            # PDF ファイルをダウンロード可能なリンクとして表示
-            st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
-            st.experimental_rerun()
             # ダウンロードボタンのラベルとファイル名
             # download_button_label = "Download File"
             # file_name = os.path.basename(pdf_data)
