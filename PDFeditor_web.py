@@ -65,8 +65,7 @@ def main():
 
             # PDF ファイルをダウンロード可能なリンクとして表示
             st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
-            old_file = None
-            new_file = None
+            st.experimental_rerun()
             # ダウンロードボタンのラベルとファイル名
             # download_button_label = "Download File"
             # file_name = os.path.basename(pdf_data)
