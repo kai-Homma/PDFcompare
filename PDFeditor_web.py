@@ -96,7 +96,8 @@ def empty_folder(folder_path):
 
 
 def diffPDF(oldfilename,newfilename):
-    temp_path = os.environ.get('TEMP')+"\PDFdiff"
+    # temp_path = os.environ.get('TEMP')+"\PDFdiff"
+    temp_path = "\PDFdiff"
     if not os.path.isdir(temp_path):
         os.makedirs(temp_path)
     
@@ -138,7 +139,7 @@ def diffPDF(oldfilename,newfilename):
     # for file_path in file_list:
     #     newpng.append(np.array(Image.open(file_path)))
     
-    im_marge=[]
+    # im_marge=[]
     leng = int(len(oldpng))
     # with tempfile.TemporaryDirectory() as td:
     print("比較合成中")
