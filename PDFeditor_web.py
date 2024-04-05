@@ -164,8 +164,8 @@ def diffPDF(oldfilename,newfilename):
         
         # 画像をPNG形式で保存
         # output_filename = str(temp_path)+"\\"+str(i)+"out.png"
-        # png=pil_image.save(format="png")
-        lists.append(pil_image)
+        png=pil_image.save(i,format="png")
+        lists.append(png)
         # im_marge.append(im_r + im_b)
         
     # output_image = Image.fromarray(im_marge)
