@@ -10,7 +10,7 @@
 
 import streamlit as st
 
-import os
+# import os
 # import glob
 # from pathlib import Path
 # from pdf2image import convert_from_path
@@ -31,22 +31,19 @@ def main():
     new_file = st.file_uploader("変更後のファイルを入れて下さい", type="pdf", key="0000")
         
     if old_file is not None:
-        if new_file is not None:
-            output(old_file,new_file)
-            
+        if new_file is not None:            
             # oldimage = convert_pdf_to_images(old_file)
             # newimage = convert_pdf_to_images(new_file)
             # PDF ファイルのバイナリデータを取得
-            
-def output(old_file,new_file):
-    st.title("少々お待ちください。")
-    pdf_data = diffPDF(old_file,new_file)
-    st.header('完了')
-    flag = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
-    # PDF ファイルをダウンロード可能なリンクとして表示
-    if flag:
-        old_file=None
-        new_file=None
+
+            st.title("少々お待ちください。")
+            pdf_data = diffPDF(old_file,new_file)
+            st.header('完了')
+            flag = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
+            # PDF ファイルをダウンロード可能なリンクとして表示
+            if flag:
+                old_file=None
+                new_file=None
             
 
             # ダウンロードボタンのラベルとファイル名
@@ -62,30 +59,30 @@ def convert_pdf_to_images(uploaded_file):
 
 
 # 中間データ用のフォルダを作成。2回目以降は中のファイルを削除
-def empty_folder(folder_path):
-    # フォルダ内のファイルを削除
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                # サブフォルダ内のファイルも削除
-                empty_folder(file_path)
-                # サブフォルダを削除
-                os.rmdir(file_path)
-        except Exception as e:
-            print(f"削除エラー: {e}")
+# def empty_folder(folder_path):
+#     # フォルダ内のファイルを削除
+#     for filename in os.listdir(folder_path):
+#         file_path = os.path.join(folder_path, filename)
+#         try:
+#             if os.path.isfile(file_path) or os.path.islink(file_path):
+#                 os.unlink(file_path)
+#             elif os.path.isdir(file_path):
+#                 # サブフォルダ内のファイルも削除
+#                 empty_folder(file_path)
+#                 # サブフォルダを削除
+#                 os.rmdir(file_path)
+#         except Exception as e:
+#             print(f"削除エラー: {e}")
 
 
 
 def diffPDF(oldfilename,newfilename):
     # temp_path = os.environ.get('TEMP')+"\PDFdiff"
-    temp_path = "\PDFdiff"
-    if not os.path.isdir(temp_path):
-        os.makedirs(temp_path)
+    # temp_path = "\PDFdiff"
+    # if not os.path.isdir(temp_path):
+    #     os.makedirs(temp_path)
     
-    empty_folder(temp_path)
+    # empty_folder(temp_path)
     
     
     #この1文で変換されたjpegファイルが、imageホルダー内に作られます。
@@ -96,7 +93,7 @@ def diffPDF(oldfilename,newfilename):
     pdf_bytes = oldfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
     page = convert_from_bytes(pdf_bytes,fmt='png',dpi=500)
-    
+    del oldfilename
     
     leng = int(len(page))
     oldpng=[]
@@ -108,6 +105,7 @@ def diffPDF(oldfilename,newfilename):
     # for file_path in file_list:
     #     oldpng.append(np.array(Image.open(file_path)))
     # with tempfile.TemporaryDirectory() as td:
+        
     print("新ファイル変換中")
     pdf_bytes = newfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
@@ -130,20 +128,21 @@ def diffPDF(oldfilename,newfilename):
     lists=[]
 
     for i in range(leng):
-        im_r = newpng[i]
-        pixel_sum = np.sum(im_r, axis=2)
-        im_r[:, :, 1] = np.where(pixel_sum > 730, 255, 0) #簡易的に2値化(Rayco等のカラーPDF対策)
+        # im_r = newpng[i]
+        pixel_sum = np.sum(newpng[i], axis=2)
+        newpng[i][:, :, 1] = np.where(pixel_sum > 730, 255, 0) #簡易的に2値化(Rayco等のカラーPDF対策)
         #赤要素のみ残す
-        im_r[:,:,0]=255
-        im_r[:,:,2]=255
-        im_b = oldpng[i]
-        pixel_sum = np.sum(im_b, axis=2)
-        im_b[:, :, 0] = np.where(pixel_sum > 730, 255, 0)
+        newpng[i][:,:,0]=255
+        newpng[i][:,:,2]=255
+        
+        # im_b = oldpng[i]
+        pixel_sum = np.sum(oldpng[i], axis=2)
+        oldpng[i][:, :, 0] = np.where(pixel_sum > 730, 255, 0)
         # 青要素のみ残す
-        im_b[:,:,2]=255
-        im_b[:,:,1]=255
+        oldpng[i][:,:,2]=255
+        oldpng[i][:,:,1]=255
         # NumPy配列をPIL Imageに変換
-        temp_array = np.minimum(im_r,im_b) # 合成
+        temp_array = np.minimum(newpng[i],oldpng[i]) # 合成
         output_array=temp_array.astype(np.uint8)
         pil_image = Image.fromarray(output_array)
         
