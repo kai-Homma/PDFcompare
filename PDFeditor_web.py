@@ -25,10 +25,10 @@ from io import BytesIO
 
 def main():
     st.title("PDF比較")
-    st.header('旧ファイル')
-    old_file = st.file_uploader("変更前のファイルを入れて下さい", type="pdf", key="1234")
-    st.header('新ファイル')
-    new_file = st.file_uploader("変更後のファイルを入れて下さい", type="pdf", key="0000")
+    st.subheader('旧ファイル')
+    old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
+    st.subheader('新ファイル')
+    new_file = st.file_uploader("変更後のPDFファイルを入れて下さい", type="pdf", key="0000")
     
     if old_file is not None:
         if new_file is not None:            
@@ -93,7 +93,7 @@ def diffPDF(oldfilename,newfilename):
     print("旧ファイル変換中")
     pdf_bytes = oldfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
-    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=500)
+    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=400)
     del oldfilename
     
     leng = int(len(page))
@@ -110,8 +110,8 @@ def diffPDF(oldfilename,newfilename):
     print("新ファイル変換中")
     pdf_bytes = newfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
-    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=500)
-    
+    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=400)
+    del newfilename
     # page = convert_from_path(newfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="new")
     leng = int(len(page))
     newpng=[]
@@ -121,7 +121,7 @@ def diffPDF(oldfilename,newfilename):
     # newpng=[]
     # for file_path in file_list:
     #     newpng.append(np.array(Image.open(file_path)))
-    
+    del page
     # im_marge=[]
     leng = int(len(oldpng))
     # with tempfile.TemporaryDirectory() as td:
@@ -144,8 +144,8 @@ def diffPDF(oldfilename,newfilename):
         oldpng[i][:,:,1]=255
         # NumPy配列をPIL Imageに変換
         temp_array = np.minimum(newpng[i],oldpng[i]) # 合成
-        output_array=temp_array.astype(np.uint8)
-        pil_image = Image.fromarray(output_array)
+        # output_array=temp_array.astype(np.uint8)
+        pil_image = Image.fromarray(temp_array.astype(np.uint8))
         
         # 画像をPNG形式で保存
         # output_filename = str(temp_path)+"\\"+str(i)+"out.png"
