@@ -26,7 +26,7 @@ from io import BytesIO
 def main():
     if st.session_state['flag'] == False:
         st.title("PDF比較")
-        st.text('Test:Hello World!')
+        st.text('比較したいファイルをアップしてもらうと比較図を作成し、ページ下にDLボタンが現れます')
         st.subheader('旧ファイル')
         old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
         st.subheader('新ファイル')
