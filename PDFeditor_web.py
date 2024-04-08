@@ -20,6 +20,12 @@ from io import BytesIO
 
 
 def main():
+    st.set_page_config(
+        page_title="本間App",
+        page_icon="🧊",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
     if st.session_state['flag'] == False:
         st.title("PDF比較")
         st.text('比較したいファイルをアップしてもらうと比較図を作成し、ページ下にDLボタンが現れます  \n ※A3サイズで12枚以上ぐらいになるとメモリが足りなくてエラーになる可能性があります…')
