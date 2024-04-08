@@ -44,6 +44,9 @@ def main():
             st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
             # PDF ファイルをダウンロード可能なリンクとして表示
             
+            while st.session_state['button']==False:()
+                
+            
             
 def restart():
     st.title("再度使用するにはページの再読み込みをお願いします")
@@ -93,7 +96,7 @@ def diffPDF(oldfilename,newfilename):
     print("旧ファイル変換中")
     pdf_bytes = oldfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
-    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=400)
+    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=450)
     del oldfilename
     
     leng = int(len(page))
@@ -110,7 +113,7 @@ def diffPDF(oldfilename,newfilename):
     print("新ファイル変換中")
     pdf_bytes = newfilename.read()
     # page = convert_from_path(oldfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="old")
-    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=400)
+    page = convert_from_bytes(pdf_bytes,fmt='png',dpi=450)
     del newfilename
     # page = convert_from_path(newfilename, output_folder=temp_path,fmt='png',dpi=500,output_file="new")
     leng = int(len(page))
