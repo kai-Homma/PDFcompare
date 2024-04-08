@@ -20,8 +20,9 @@ from io import BytesIO
 
 
 def main():
+
     st.set_page_config(
-        page_title="本間App",
+        page_title="PDF-App",
         page_icon="🧊",
         layout="wide",
         initial_sidebar_state="expanded"
@@ -44,6 +45,7 @@ def main():
                     st.session_state['flag'] = True
                      
                     st.subheader('完了')
+                    st.balloons()
                     # PDF ファイルをダウンロード可能なリンクとして表示
                     st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
             
