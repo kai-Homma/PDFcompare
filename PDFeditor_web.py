@@ -17,8 +17,7 @@ import numpy as np
 import img2pdf
 from io import BytesIO
 
-from selenium.webdriver import ChromeOptions
-
+from memory_profiler import profile
 
 def main():
 
@@ -53,7 +52,8 @@ def main():
     
     if st.session_state['flag'] == True:
         st.title("再度使用するにはページの再読み込みをお願いします")
-                
+        
+@profile                
 def diffPDF(oldfilename,newfilename):
     print("旧ファイル変換中")
     # PDF ファイルのバイナリデータを取得
@@ -121,15 +121,6 @@ if __name__ == "__main__":
         st.session_state['button'] = False
     if "flag" not in st.session_state:
         st.session_state['flag'] = False
-        
-    # ドライバのオプション
-    options = ChromeOptions()
-    
-    # option設定を追加
-    options.add_argument("--headless")
-    # option設定を追加（設定する理由はメモリの削減）
-    options.add_argument('--disable-gpu')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')    
+          
         
     main()
