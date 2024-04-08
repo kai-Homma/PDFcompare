@@ -29,17 +29,19 @@ def main():
     old_file = st.file_uploader("変更前のファイルを入れて下さい", type="pdf", key="1234")
     st.header('新ファイル')
     new_file = st.file_uploader("変更後のファイルを入れて下さい", type="pdf", key="0000")
-        
+      
+    if "button" not in st.session_state:
+        old_file=None
+        new_file=None
+        st.session_state['flag'] = 'true'
+    
     if old_file is not None:
         if new_file is not None:            
             # oldimage = convert_pdf_to_images(old_file)
             # newimage = convert_pdf_to_images(new_file)
             # PDF ファイルのバイナリデータを取得
 
-            if "button" not in st.session_state:
-                old_file=None
-                new_file=None
-                st.session_state['flag'] = 'true'
+            
 
             st.title("少々お待ちください。")
             pdf_data = diffPDF(old_file,new_file)
