@@ -30,21 +30,27 @@ def main():
     st.subheader('新ファイル')
     new_file = st.file_uploader("変更後のPDFファイルを入れて下さい", type="pdf", key="0000")
     
+    if "flag" not in st.session_state:
+        st.session_state['flag'] = False
+    
     if old_file is not None:
-        if new_file is not None:            
+        if new_file is not None:       
+            if st.session_state['flag'] == False:
             # oldimage = convert_pdf_to_images(old_file)
             # newimage = convert_pdf_to_images(new_file)
             # PDF ファイルのバイナリデータを取得
 
-            
 
-            st.title("少々お待ちください。")
-            pdf_data = diffPDF(old_file,new_file)
-            st.header('完了')
-            st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
+
+                st.title("少々お待ちください。")
+                pdf_data = diffPDF(old_file,new_file)
+                st.session_state['flag'] = True
+                
+    if st.session_state['flag'] == True:      
+        st.header('完了')
+        st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
             # PDF ファイルをダウンロード可能なリンクとして表示
             
-            while st.session_state['button']==False:()
                 
             
             
