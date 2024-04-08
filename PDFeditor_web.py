@@ -34,7 +34,7 @@ def main():
         st.session_state['button'] = "false"
         
     
-    if st.session_state['button'] == "true":
+    if st.session_state['button'] == True:
         old_file=None
         new_file=None
         st.session_state['flag'] = 'true'
