@@ -36,15 +36,17 @@ def main():
             # newimage = convert_pdf_to_images(new_file)
             # PDF ファイルのバイナリデータを取得
 
-            st.title("少々お待ちください。")
-            pdf_data = diffPDF(old_file,new_file)
-            st.header('完了')
-            flag = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
-            # PDF ファイルをダウンロード可能なリンクとして表示
-            if flag:
+            if "button" not in st.session_state:
                 old_file=None
                 new_file=None
                 st.session_state['flag'] = 'true'
+
+            st.title("少々お待ちください。")
+            pdf_data = diffPDF(old_file,new_file)
+            st.header('完了')
+            st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
+            # PDF ファイルをダウンロード可能なリンクとして表示
+            
             
 def restart():
     st.title("再度使用するにはページの再読み込みをお願いします")
