@@ -27,7 +27,7 @@ def main():
     if st.session_state['flag'] == False:
         st.title("PDF比較")
         st.text('比較したいファイルをアップしてもらうと比較図を作成し、ページ下にDLボタンが現れます')
-        st.text('※A3サイズで12枚以上ぐらいになるとメモリが足りなくてエラーになる可能性がありますので、使用しないでいただきたいです')
+        st.text('※A3サイズで12枚以上ぐらいになるとメモリが足りなくてエラーになる可能性があります…')
         st.subheader('旧ファイル')
         old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
         st.subheader('新ファイル')
@@ -43,11 +43,11 @@ def main():
     
     
     
-                    st.title("少々お待ちください。")
+                    st.subheader("少々お待ちください。")
                     pdf_data = diffPDF(old_file,new_file)
                     st.session_state['flag'] = True
                      
-                    st.header('完了')
+                    st.subheader('完了')
                     st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
             # PDF ファイルをダウンロード可能なリンクとして表示
     
