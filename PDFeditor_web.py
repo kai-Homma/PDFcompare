@@ -17,7 +17,7 @@ import numpy as np
 import img2pdf
 from io import BytesIO
 
-from memory_profiler import profile
+# from memory_profiler import profile
 
 def main():
 
@@ -53,7 +53,7 @@ def main():
     if st.session_state['flag'] == True:
         st.title("再度使用するにはページの再読み込みをお願いします")
         
-@profile                
+# @profile                
 def diffPDF(oldfilename,newfilename):
     print("旧ファイル変換中")
     # PDF ファイルのバイナリデータを取得
@@ -67,6 +67,11 @@ def diffPDF(oldfilename,newfilename):
     # 一度pngにしたものをnumpyに変換
     for i in range(leng):
         oldpng.append(np.array(page[i]))
+        pixel_sum = np.sum(oldpng[i], axis=2)
+        oldpng[i][:, :, 0] = np.where(pixel_sum > 730, 255, 0)
+        # 青要素のみ残す
+        oldpng[i][:,:,2]=255
+        oldpng[i][:,:,1]=255
         
     print("新ファイル変換中")
     # PDF ファイルのバイナリデータを取得
@@ -75,44 +80,37 @@ def diffPDF(oldfilename,newfilename):
     page = convert_from_bytes(pdf_bytes,fmt='png',dpi=450)
     del newfilename #メモリ開放
     leng = int(len(page))
-    newpng=[]
     # 一度pngにしたものをnumpyに変換
     for i in range(leng):
-        newpng.append(np.array(page[i]))
+        newpng=np.array(page[i])
+        pixel_sum = np.sum(newpng, axis=2)
+        newpng[:, :, 1] = np.where(pixel_sum > 730, 255, 0) #簡易的に2値化(Rayco等のカラーPDF対策)
+        #赤要素のみ残す
+        newpng[:,:,0]=255
+        newpng[:,:,2]=255
+        # 合成
+        oldpng[i] = np.minimum(newpng,oldpng[i])
 
     del page #メモリ開放
-
+    del pixel_sum
+    del newpng
+    
     leng = int(len(oldpng))
     print("比較合成中")
-    lists=[]
+    lists=[]       
 
-    for i in range(leng):
-        # im_r = newpng[i]
-        pixel_sum = np.sum(newpng[i], axis=2)
-        newpng[i][:, :, 1] = np.where(pixel_sum > 730, 255, 0) #簡易的に2値化(Rayco等のカラーPDF対策)
-        #赤要素のみ残す
-        newpng[i][:,:,0]=255
-        newpng[i][:,:,2]=255
-        
-        # im_b = oldpng[i]
-        pixel_sum = np.sum(oldpng[i], axis=2)
-        oldpng[i][:, :, 0] = np.where(pixel_sum > 730, 255, 0)
-        # 青要素のみ残す
-        oldpng[i][:,:,2]=255
-        oldpng[i][:,:,1]=255
-        # NumPy配列をPIL Imageに変換
-        temp_array = np.minimum(newpng[i],oldpng[i]) # 合成
-        # output_array=temp_array.astype(np.uint8)
-        pil_image = Image.fromarray(temp_array.astype(np.uint8))
+    for i in range(leng): 
+        pil_image = Image.fromarray(oldpng[i].astype(np.uint8))
         
         # バッファにpngとして保存
         buffered = BytesIO()
         pil_image.save(buffered, format="png")
-
         lists.append(buffered)
+    del buffered,oldpng
     
     # PDFファイル出力
     images = img2pdf.convert([i.getvalue() for i in lists])
+    del lists
     # images = img2pdf.convert([i for i in lists])# if ".png" in i])
     return images
     
