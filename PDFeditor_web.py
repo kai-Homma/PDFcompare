@@ -17,6 +17,7 @@ import numpy as np
 import img2pdf
 from io import BytesIO
 
+from selenium.webdriver import ChromeOptions
 
 
 def main():
@@ -118,7 +119,17 @@ def diffPDF(oldfilename,newfilename):
 if __name__ == "__main__":
     if "button" not in st.session_state:
         st.session_state['button'] = False
-        
     if "flag" not in st.session_state:
         st.session_state['flag'] = False
+        
+    # ドライバのオプション
+    options = ChromeOptions()
+    
+    # option設定を追加
+    options.add_argument("--headless")
+    # option設定を追加（設定する理由はメモリの削減）
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')    
+        
     main()
