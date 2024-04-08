@@ -31,6 +31,10 @@ def main():
     new_file = st.file_uploader("変更後のファイルを入れて下さい", type="pdf", key="0000")
       
     if "button" not in st.session_state:
+        st.session_state['button'] = "false"
+        
+    
+    if st.session_state['button'] == "true":
         old_file=None
         new_file=None
         st.session_state['flag'] = 'true'
