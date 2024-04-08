@@ -49,12 +49,12 @@ def main():
                 st.header('完了')
                 st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
             # PDF ファイルをダウンロード可能なリンクとして表示
-            
+    
+    if st.session_state['flag'] == True:
+        st.title("再度使用するにはページの再読み込みをお願いします")
                 
             
             
-def restart():
-    st.title("再度使用するにはページの再読み込みをお願いします")
             # ダウンロードボタンのラベルとファイル名
             # download_button_label = "Download File"
             # file_name = os.path.basename(pdf_data)
@@ -180,7 +180,4 @@ if __name__ == "__main__":
     if "button" not in st.session_state:
         st.session_state['button'] = False
         
-    if st.session_state['button'] == True:
-        restart()
-    else:
         main()
