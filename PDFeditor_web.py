@@ -24,30 +24,30 @@ from io import BytesIO
 
 
 def main():
-    st.title("PDF比較")
-    st.subheader('旧ファイル')
-    old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
-    st.subheader('新ファイル')
-    new_file = st.file_uploader("変更後のPDFファイルを入れて下さい", type="pdf", key="0000")
+    if st.session_state['flag'] == False:
+        st.title("PDF比較")
+        st.text('Test:Hello World!')
+        st.subheader('旧ファイル')
+        old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
+        st.subheader('新ファイル')
+        new_file = st.file_uploader("変更後のPDFファイルを入れて下さい", type="pdf", key="0000")
+        
     
-    if "flag" not in st.session_state:
-        st.session_state['flag'] = False
+        
+        if old_file is not None:
+            if new_file is not None:       
+                # oldimage = convert_pdf_to_images(old_file)
+                # newimage = convert_pdf_to_images(new_file)
+                # PDF ファイルのバイナリデータを取得
     
-    if old_file is not None:
-        if new_file is not None:       
-            if st.session_state['flag'] == False:
-            # oldimage = convert_pdf_to_images(old_file)
-            # newimage = convert_pdf_to_images(new_file)
-            # PDF ファイルのバイナリデータを取得
-
-
-
-                st.title("少々お待ちください。")
-                pdf_data = diffPDF(old_file,new_file)
-                st.session_state['flag'] = True
-                 
-                st.header('完了')
-                st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
+    
+    
+                    st.title("少々お待ちください。")
+                    pdf_data = diffPDF(old_file,new_file)
+                    st.session_state['flag'] = True
+                     
+                    st.header('完了')
+                    st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
             # PDF ファイルをダウンロード可能なリンクとして表示
     
     if st.session_state['flag'] == True:
@@ -180,4 +180,6 @@ if __name__ == "__main__":
     if "button" not in st.session_state:
         st.session_state['button'] = False
         
+    if "flag" not in st.session_state:
+        st.session_state['flag'] = False
     main()
