@@ -2,3 +2,4 @@ img2pdf==0.5.1
 numpy==1.26.4
 pdf2image==1.17.0
 streamlit
+memory_profiler
