@@ -29,15 +29,6 @@ def main():
     old_file = st.file_uploader("変更前のファイルを入れて下さい", type="pdf", key="1234")
     st.header('新ファイル')
     new_file = st.file_uploader("変更後のファイルを入れて下さい", type="pdf", key="0000")
-      
-    if "button" not in st.session_state:
-        st.session_state['button'] = "false"
-        
-    
-    if st.session_state['button'] == True:
-        old_file=None
-        new_file=None
-        st.session_state['flag'] = 'true'
     
     if old_file is not None:
         if new_file is not None:            
@@ -178,7 +169,10 @@ def diffPDF(oldfilename,newfilename):
     return images
     
 if __name__ == "__main__":
-    if "flag" not in st.session_state:
-        main()
-    else:
+    if "button" not in st.session_state:
+        st.session_state['button'] = False
+        
+    if st.session_state['button'] == True:
         restart()
+    else:
+        main()
