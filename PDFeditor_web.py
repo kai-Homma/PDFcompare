@@ -44,8 +44,10 @@ def main():
             if flag:
                 old_file=None
                 new_file=None
+                st.session_state['flag'] = 'true'
             
-
+def restart():
+    st.title("再度使用するにはページの再読み込みをお願いします")
             # ダウンロードボタンのラベルとファイル名
             # download_button_label = "Download File"
             # file_name = os.path.basename(pdf_data)
@@ -168,4 +170,7 @@ def diffPDF(oldfilename,newfilename):
     return images
     
 if __name__ == "__main__":
-    main()
+    if "flag" not in st.session_state:
+        main()
+    else:
+        restart()
