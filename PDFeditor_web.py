@@ -45,10 +45,9 @@ def main():
                 st.title("少々お待ちください。")
                 pdf_data = diffPDF(old_file,new_file)
                 st.session_state['flag'] = True
-                
-    if st.session_state['flag'] == True:      
-        st.header('完了')
-        st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
+                 
+                st.header('完了')
+                st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
             # PDF ファイルをダウンロード可能なリンクとして表示
             
                 
