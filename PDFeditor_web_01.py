@@ -86,14 +86,14 @@ def diffPDF(oldfilename,newfilename):
     lists=[]   
     # 一度pngにしたものをnumpyに変換
     for i in range(leng):
-        oldpng=np.array(page[0].pop)
+        oldpng=np.array(page.pop(0))
         pixel_sum = np.sum(oldpng, axis=2)
         oldpng[:, :, 0] = np.where(pixel_sum > 730, 255, 0)
         # 青要素のみ残す
         oldpng[:,:,2]=255
         oldpng[:,:,1]=255
         
-        newpng=np.array(newpage[0].pop)
+        newpng=np.array(newpage.pop(0))
         pixel_sum = np.sum(newpng, axis=2)
         newpng[:, :, 1] = np.where(pixel_sum > 730, 255, 0) #簡易的に2値化(Rayco等のカラーPDF対策)
         #赤要素のみ残す
