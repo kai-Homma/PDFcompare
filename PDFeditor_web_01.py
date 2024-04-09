@@ -105,7 +105,7 @@ def diffPDF(oldfilename,newfilename):
         # バッファにpngとして保存
         buffered = BytesIO()
         pil_image.save(buffered, format="png")
-        lists.append(buffered)
+        lists.insert(0,buffered)
 
     del page #メモリ開放
     del newpage
