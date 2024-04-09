@@ -73,12 +73,12 @@ def diffPDF(oldfilename,newfilename):
     newleng = int(len(newpage))
     del newfilename #メモリ開放
     
-    if leng is not newleng:
+    if not leng == newleng:
         st.session_state['flag'] = "page"
         return 0
     
     for i in range(leng):
-        if page[i].size is not newpage[i].size:
+        if not page[i].size == newpage[i].size:
             st.session_state['flag'] = "page"
             return 0
     
