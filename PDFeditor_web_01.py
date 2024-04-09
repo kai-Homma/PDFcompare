@@ -28,11 +28,11 @@ def main():
         initial_sidebar_state="expanded"
     )
     if st.session_state['flag'] == False:
-        st.text("PDF比較")
+        st.subheader("PDF比較")
         st.text('比較したいファイルをアップしてもらうと比較図を作成し、ページ下にDLボタンが現れます  \n ※基板図を想定しているので、何十枚ものPDFになるとメモリが足りなくてエラーになる可能性があります…')
         st.subheader('旧ファイル')
         old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
-        st.text('新ファイル')
+        st.subheader('新ファイル')
         new_file = st.file_uploader("変更後のPDFファイルを入れて下さい", type="pdf", key="0000")
 
         
