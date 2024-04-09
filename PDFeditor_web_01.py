@@ -50,6 +50,8 @@ def main():
     
     if st.session_state['flag'] == "page":
         st.title("PDFのページ数は合わせてください")
+        st.button("OK")
+        st.title("再度使用するにはページの再読み込みをお願いします")
     
     if st.session_state['flag'] == True:
         st.title("再度使用するにはページの再読み込みをお願いします")
