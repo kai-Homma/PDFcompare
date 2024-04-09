@@ -92,7 +92,7 @@ def diffPDF(oldfilename,newfilename):
         oldpng[:,:,2]=255
         oldpng[:,:,1]=255
         
-        newpng=np.array(page[i])
+        newpng=np.array(newpage[i])
         pixel_sum = np.sum(newpng, axis=2)
         newpng[:, :, 1] = np.where(pixel_sum > 730, 255, 0) #簡易的に2値化(Rayco等のカラーPDF対策)
         #赤要素のみ残す
@@ -107,9 +107,11 @@ def diffPDF(oldfilename,newfilename):
         lists.append(buffered)
 
     del page #メモリ開放
+    del newpage
     del pixel_sum
+    del oldpng
     del newpng
-    del buffered,oldpng
+    del buffered
     
     # PDFファイル出力
     images = img2pdf.convert([i.getvalue() for i in lists])
