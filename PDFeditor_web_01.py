@@ -22,17 +22,17 @@ from io import BytesIO
 def main():
 
     st.set_page_config(
-        page_title="PDF-App",
-        page_icon="🧊",
+        page_title="PDFcompare",
+        # page_icon="🧊",
         layout="wide",
         initial_sidebar_state="expanded"
     )
     if st.session_state['flag'] == False:
-        st.title("PDF比較")
+        st.text("PDF比較")
         st.text('比較したいファイルをアップしてもらうと比較図を作成し、ページ下にDLボタンが現れます  \n ※基板図を想定しているので、何十枚ものPDFになるとメモリが足りなくてエラーになる可能性があります…')
         st.subheader('旧ファイル')
         old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
-        st.subheader('新ファイル')
+        st.text('新ファイル')
         new_file = st.file_uploader("変更後のPDFファイルを入れて下さい", type="pdf", key="0000")
 
         
@@ -76,6 +76,7 @@ def diffPDF(oldfilename,newfilename):
     if not leng == newleng:
         st.session_state['flag'] = "page"
         return 0
+    del newleng #メモリ開放
     
     for i in range(leng):
         if not page[i].size == newpage[i].size:
@@ -85,14 +86,14 @@ def diffPDF(oldfilename,newfilename):
     lists=[]   
     # 一度pngにしたものをnumpyに変換
     for i in range(leng):
-        oldpng=np.array(page[i])
+        oldpng=np.array(page[0].pop)
         pixel_sum = np.sum(oldpng, axis=2)
         oldpng[:, :, 0] = np.where(pixel_sum > 730, 255, 0)
         # 青要素のみ残す
         oldpng[:,:,2]=255
         oldpng[:,:,1]=255
         
-        newpng=np.array(newpage[i])
+        newpng=np.array(newpage[0].pop)
         pixel_sum = np.sum(newpng, axis=2)
         newpng[:, :, 1] = np.where(pixel_sum > 730, 255, 0) #簡易的に2値化(Rayco等のカラーPDF対策)
         #赤要素のみ残す
