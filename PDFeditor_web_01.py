@@ -29,7 +29,7 @@ def main():
     )
     if st.session_state['flag'] == False:
         st.title("PDF比較")
-        st.text('比較したいファイルをアップしてもらうと比較図を作成し、ページ下にDLボタンが現れます  \n ※A3サイズで12枚以上ぐらいになるとメモリが足りなくてエラーになる可能性があります…')
+        st.text('比較したいファイルをアップしてもらうと比較図を作成し、ページ下にDLボタンが現れます  \n ※基板図を想定しているので、何十枚ものPDFになるとメモリが足りなくてエラーになる可能性があります…')
         st.subheader('旧ファイル')
         old_file = st.file_uploader("変更前のPDFファイルを入れて下さい", type="pdf", key="1234")
         st.subheader('新ファイル')
