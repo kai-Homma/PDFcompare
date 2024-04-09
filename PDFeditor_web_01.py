@@ -49,7 +49,7 @@ def main():
                         st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
     
     if st.session_state['flag'] == "page":
-        st.title("PDFのページ数は合わせてください")
+        st.title("PDFのページ数・サイズは合わせてください")
         st.button("OK")
         st.title("再度使用するにはページの再読み込みをお願いします")
     
@@ -76,6 +76,11 @@ def diffPDF(oldfilename,newfilename):
     if leng is not newleng:
         st.session_state['flag'] = "page"
         return 0
+    
+    for i in range(leng):
+        if page[i].size is not newpage[i].size:
+            st.session_state['flag'] = "page"
+            return 0
     
     lists=[]   
     # 一度pngにしたものをnumpyに変換
