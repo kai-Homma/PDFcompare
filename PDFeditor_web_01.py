@@ -40,13 +40,13 @@ def main():
             if new_file is not None:       
                     st.session_state['flag'] = True
                     st.subheader("少々お待ちください。")
-                    pdf_data = diffPDF(old_file,new_file)
+                    pdf_data,filename = diffPDF(old_file,new_file)
                     
                     if st.session_state['flag'] == True:
                         st.subheader('完了')
                         st.balloons()
                         # PDF ファイルをダウンロード可能なリンクとして表示
-                        st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name="output.pdf", mime="application/pdf")
+                        st.session_state['button'] = st.download_button(label="Download PDF", data=pdf_data, file_name=filename, mime="application/pdf")
     
     if st.session_state['flag'] == "page":
         st.title("PDFのページ数・サイズは合わせてください")
@@ -58,6 +58,7 @@ def main():
         
 # @profile                
 def diffPDF(oldfilename,newfilename):
+    output_filename = oldfilename.name[:-4] + "vs" + newfilename.name[:-4]
     print("旧ファイル変換中")
     # PDF ファイルのバイナリデータを取得
     pdf_bytes = oldfilename.read()
@@ -118,7 +119,7 @@ def diffPDF(oldfilename,newfilename):
     images = img2pdf.convert([i.getvalue() for i in lists])
     del lists
     # images = img2pdf.convert([i for i in lists])# if ".png" in i])
-    return images
+    return images,output_filename
     
 if __name__ == "__main__":
     if "button" not in st.session_state:
