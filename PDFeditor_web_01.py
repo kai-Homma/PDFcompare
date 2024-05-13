@@ -58,7 +58,7 @@ def main():
         
 # @profile                
 def diffPDF(oldfilename,newfilename):
-    output_filename = oldfilename.name[:-4] + "vs" + newfilename.name[:-4]
+    output_filename = oldfilename.name[:-4] + "vs" + newfilename.name
     print("旧ファイル変換中")
     # PDF ファイルのバイナリデータを取得
     pdf_bytes = oldfilename.read()
